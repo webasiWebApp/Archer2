@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 export default function ArcherScores({ archerId }) {
   const [scores, setScores] = useState([]);
   const [filters, setFilters] = useState({ from: '', to: '', roundId: '', sort: 'date' });
 
-  const fetchScores = async () => {
+  const fetchScores = useCallback(async () => {
     try {
       const params = {};
       if (filters.from) params.from = filters.from;
@@ -18,11 +18,11 @@ export default function ArcherScores({ archerId }) {
     } catch (err) {
       console.error(err);
     }
-  };
+  }, [filters, archerId]);
 
   useEffect(() => {
     fetchScores();
-  }, [filters, archerId]);
+  }, [fetchScores]);
 
   return (
     <div>
